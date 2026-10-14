@@ -152,9 +152,16 @@
     .stats{grid-template-columns:1fr}.photos{grid-template-columns:1fr}
     .amounts{grid-template-columns:repeat(3,1fr)}
     .rules{columns:1}
+    /* 2026-10-14 mobile fix: a 1fr track is minmax(auto,1fr), so the long email/address in the contact card set a
+       479px floor and pushed the donate section off the right edge. minmax(0,1fr) + wrapping lets it shrink. */
+    .two{grid-template-columns:minmax(0,1fr)}.two>*{min-width:0}
+    .band .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .amounts{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .kv{grid-template-columns:minmax(0,90px) minmax(0,1fr)}.kv dd,.addr,.card a{overflow-wrap:anywhere;word-break:break-word}
     .nav ul{display:none}.nav .logo svg{height:42px}
     section{padding:64px 0}
   }
+  @media (max-width:480px){.card{padding:26px 20px 24px}.amounts a{font-size:19px;padding:12px 4px}}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero video.bg{display:none}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Common Sense for California","alternateName":"Common Sense for California PAC","url":"https://commonsensecaliforniapac.com/","logo":"https://commonsensecaliforniapac.com/logo-email.png","image":"https://commonsensecaliforniapac.com/og-v2.jpg","email":"info@commonsensecaliforniapac.com","description":"An independent federal political committee (super PAC), FEC ID C00942920, that reaches the California voters who decide close races.","address":{"@type":"PostalAddress","streetAddress":"228 S. Washington St., Suite 115","addressLocality":"Alexandria","addressRegion":"VA","postalCode":"22314","addressCountry":"US"},"identifier":{"@type":"PropertyValue","propertyID":"FEC ID","value":"C00942920"}}</script>
