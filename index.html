@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BGN8H4TBWY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-BGN8H4TBWY');
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Common Sense for California | Independent Super PAC</title>
@@ -312,5 +320,13 @@
   </div>
 </footer>
 
+<script>
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href*="anedot.com"]') : null;
+    if (!a || typeof gtag !== 'function') return;
+    var m = a.href.match(/amount=(\d+)/);
+    gtag('event', 'donate_click', { link_url: a.href, preset_amount: m ? Number(m[1]) / 100 : 0 });
+  });
+</script>
 </body>
 </html>
