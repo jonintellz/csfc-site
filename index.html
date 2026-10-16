@@ -171,6 +171,22 @@
   }
   @media (max-width:480px){.card{padding:26px 20px 24px}.amounts a{font-size:19px;padding:12px 4px}}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero video.bg{display:none}}
+<!-- SMS-OPTIN:CSS:BEGIN -->
+.sms{background:var(--paper-2);padding:64px 0;border-top:1px solid var(--rule)}
+.sms .two{align-items:start}
+.sms-form{display:grid;gap:16px;max-width:560px}
+.sms-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.sms-form label{display:grid;gap:6px;font-weight:600;font-size:15px;color:var(--slate-ink)}
+.sms-form input[type=text],.sms-form input[type=tel]{font:inherit;font-weight:400;padding:12px 14px;border:1px solid rgba(23,57,74,.35);border-radius:4px;background:var(--white);color:var(--ink);min-width:0}
+.sms-form input:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+.sms-consent{display:flex!important;grid-template-columns:none;align-items:flex-start;gap:10px;font-weight:500!important}
+.sms-consent input{width:20px;height:20px;margin-top:2px;accent-color:var(--slate)}
+.sms-btn{justify-self:start;background:var(--gold);color:var(--slate-ink);border:2px solid var(--gold);border-radius:4px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:.06em;text-transform:uppercase;padding:12px 26px;cursor:pointer}
+.sms-btn:disabled{opacity:.6;cursor:wait}
+.sms-disclosure{font-size:13px;line-height:1.5;color:var(--muted);margin:0}
+.sms-msg{font-weight:600;color:var(--slate);margin:0}
+footer .legal a{color:inherit}
+<!-- SMS-OPTIN:CSS:END -->
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Common Sense for California","alternateName":"Common Sense for California PAC","url":"https://commonsensecaliforniapac.com/","logo":"https://commonsensecaliforniapac.com/logo-email.png","image":"https://commonsensecaliforniapac.com/og-v2.jpg","email":"info@commonsensecaliforniapac.com","description":"An independent federal political committee (super PAC), FEC ID C00942920, that reaches the California voters who decide close races.","address":{"@type":"PostalAddress","streetAddress":"228 S. Washington St., Suite 115","addressLocality":"Alexandria","addressRegion":"VA","postalCode":"22314","addressCountry":"US"},"identifier":{"@type":"PropertyValue","propertyID":"FEC ID","value":"C00942920"}}</script>
 </head>
@@ -294,6 +310,30 @@
   </div>
 </section>
 
+<!-- SMS-OPTIN:SECTION:BEGIN -->
+<section class="sms" id="texts" aria-labelledby="sms-h">
+  <div class="wrap two">
+    <div>
+      <p class="eyebrow">Text updates</p>
+      <h2 id="sms-h">Get updates by text</h2>
+      <p class="lead">Updates on the race, donation asks and the occasional briefing, sent to your phone. Reply STOP at any time.</p>
+    </div>
+    <div>
+<form class="sms-form" id="sms-form" action="https://docs.google.com/forms/d/e/1FAIpQLScuswCb8l_KfMUWmpmmJOSRmSTE4S-l_Yf85A2wmviIhHHqYQ/formResponse" method="post">
+  <div class="sms-fields">
+    <label for="sms-first">First name<input id="sms-first" name="entry.91836452" type="text" autocomplete="given-name" required></label>
+    <label for="sms-phone">Mobile phone<input id="sms-phone" name="entry.982927747" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(555) 555-5555" required></label>
+    <label for="sms-zip">ZIP code<input id="sms-zip" name="entry.30845203" type="text" inputmode="numeric" autocomplete="postal-code" pattern="^[0-9]{5}$" maxlength="5"></label>
+  </div>
+  <label class="sms-consent" for="sms-consent"><input id="sms-consent" name="entry.283279778" type="checkbox" value="I agree to receive text messages from Common Sense for California" required> <span>Yes, send me text messages from Common Sense for California.</span></label>
+  <button type="submit" class="sms-btn">Sign up for texts</button>
+  <p class="sms-disclosure">By submitting this form and signing up for texts, you consent to receive updates, donation asks, and informational messages from Common Sense for California. Msg &amp; data rates may apply. Msg frequency varies. Unsubscribe at any time by replying STOP or clicking the unsubscribe link. Reply HELP for help. <a href="privacy.html">Privacy Policy</a> &amp; <a href="terms.html">Terms</a>.</p>
+</form>
+<p class="sms-msg" id="sms-msg" role="status" aria-live="polite" hidden></p>
+    </div>
+  </div>
+</section>
+<!-- SMS-OPTIN:SECTION:END -->
 <section class="contact" id="contact">
   <div class="wrap two">
     <div>
@@ -316,7 +356,10 @@
   <div class="wrap">
     <span>Common Sense for California &middot; FEC ID <a href="https://www.fec.gov/data/committee/C00942920/" target="_blank" rel="noopener">C00942920</a></span>
     <span><a href="mailto:info@commonsensecaliforniapac.com">info@commonsensecaliforniapac.com</a></span>
-    <span>&copy; 2026 Common Sense for California. All rights reserved.</span>
+    <!-- SMS-OPTIN:FOOTER:BEGIN -->
+<span class="legal"><a href="privacy.html">Privacy Policy</a> &middot; <a href="terms.html">Terms</a></span>
+<!-- SMS-OPTIN:FOOTER:END -->
+<span>&copy; 2026 Common Sense for California. All rights reserved.</span>
   </div>
 </footer>
 
@@ -328,5 +371,35 @@
     gtag('event', 'donate_click', { link_url: a.href, preset_amount: m ? Number(m[1]) / 100 : 0 });
   });
 </script>
+<!-- SMS-OPTIN:JS:BEGIN -->
+<script>
+(function () {
+  var f = document.getElementById('sms-form'); if (!f) return;
+  var msg = document.getElementById('sms-msg');
+  var ph = document.getElementById('sms-phone');
+  ph.addEventListener('input', function () {
+    var d = ph.value.replace(/[^0-9]/g, '');
+    if (d.length === 11 && d.charAt(0) === '1') d = d.slice(1);
+    ph.setCustomValidity(d.length === 10 ? '' : 'Enter a 10-digit US mobile number.');
+  });
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!f.checkValidity()) { f.reportValidity(); return; }
+    var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
+    var body = new URLSearchParams(new FormData(f));
+    fetch(f.action, { method: 'POST', mode: 'no-cors', body: body }).then(function () {
+      f.hidden = true;
+      msg.textContent = 'Thanks, you are signed up. Reply STOP at any time to opt out, or HELP for help.';
+      msg.hidden = false;
+      if (typeof gtag === 'function') gtag('event', 'sms_signup');
+    }).catch(function () {
+      btn.disabled = false;
+      msg.textContent = 'That did not go through. Check your connection and try again.';
+      msg.hidden = false;
+    });
+  });
+})();
+</script>
+<!-- SMS-OPTIN:JS:END -->
 </body>
 </html>
