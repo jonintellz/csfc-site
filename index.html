@@ -322,10 +322,10 @@ footer .legal a{color:inherit}
 <form class="sms-form" id="sms-form" action="https://docs.google.com/forms/d/e/1FAIpQLScuswCb8l_KfMUWmpmmJOSRmSTE4S-l_Yf85A2wmviIhHHqYQ/formResponse" method="post">
   <div class="sms-fields">
     <label for="sms-first">First name<input id="sms-first" name="entry.91836452" type="text" autocomplete="given-name" required></label>
-    <label for="sms-phone">Mobile phone<input id="sms-phone" name="entry.982927747" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(555) 555-5555" required></label>
+    <label for="sms-phone">Mobile phone (optional)<input id="sms-phone" name="entry.982927747" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(555) 555-5555"></label>
     <label for="sms-zip">ZIP code<input id="sms-zip" name="entry.30845203" type="text" inputmode="numeric" autocomplete="postal-code" pattern="^[0-9]{5}$" maxlength="5"></label>
   </div>
-  <label class="sms-consent" for="sms-consent"><input id="sms-consent" name="entry.283279778" type="checkbox" value="I agree to receive text messages from Common Sense for California" required> <span>Yes, send me text messages from Common Sense for California.</span></label>
+  <label class="sms-consent" for="sms-consent"><input id="sms-consent" name="entry.283279778" type="checkbox" value="I agree to receive text messages from Common Sense for California"> <span>Yes, send me text messages from Common Sense for California.</span></label>
   <button type="submit" class="sms-btn">Sign up for texts</button>
   <p class="sms-disclosure">By submitting this form and signing up for texts, you consent to receive updates, donation asks, and informational messages from Common Sense for California. Msg &amp; data rates may apply. Msg frequency varies. Unsubscribe at any time by replying STOP or clicking the unsubscribe link. Reply HELP for help. <a href="privacy.html">Privacy Policy</a> &amp; <a href="terms.html">Terms</a>.</p>
 </form>
@@ -377,19 +377,26 @@ footer .legal a{color:inherit}
   var f = document.getElementById('sms-form'); if (!f) return;
   var msg = document.getElementById('sms-msg');
   var ph = document.getElementById('sms-phone');
-  ph.addEventListener('input', function () {
+  var cb = document.getElementById('sms-consent');
+  function phoneRule() {
     var d = ph.value.replace(/[^0-9]/g, '');
     if (d.length === 11 && d.charAt(0) === '1') d = d.slice(1);
-    ph.setCustomValidity(d.length === 10 ? '' : 'Enter a 10-digit US mobile number.');
-  });
+    // the phone is optional (Jon 2026-10-19); when one is given it must be a full US number and the text consent box is required
+    ph.setCustomValidity(d.length === 0 || d.length === 10 ? '' : 'Enter a 10-digit US mobile number, or leave it blank.');
+    cb.required = d.length > 0;
+    return d.length > 0;
+  }
+  ph.addEventListener('input', phoneRule);
   f.addEventListener('submit', function (e) {
     e.preventDefault();
+    var hasPhone = phoneRule();
     if (!f.checkValidity()) { f.reportValidity(); return; }
     var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
     var body = new URLSearchParams(new FormData(f));
     fetch(f.action, { method: 'POST', mode: 'no-cors', body: body }).then(function () {
       f.hidden = true;
-      msg.textContent = 'Thanks, you are signed up. Reply STOP at any time to opt out, or HELP for help.';
+      msg.textContent = hasPhone ? 'Thanks, you are signed up. Reply STOP at any time to opt out, or HELP for help.'
+                                 : 'Thanks, you are signed up.';
       msg.hidden = false;
       if (typeof gtag === 'function') gtag('event', 'sms_signup');
     }).catch(function () {
