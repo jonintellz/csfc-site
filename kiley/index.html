@@ -82,6 +82,11 @@
   .nav ul a{color:rgba(255,255,255,.86);text-decoration:none;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.08em;text-transform:uppercase;padding:6px 0;border-bottom:2px solid transparent}
   .nav ul a:hover{color:#fff;border-bottom-color:var(--gold)}
   .nav .btn{padding:12px 22px;font-size:18px;box-shadow:none}
+  /* 2026-10-22, Jon: "we still need a home button". The menu (with Home) hides on phones, so phones get this bar under the header */
+  .homebar{display:none;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;background:var(--slate);color:#fff;
+    font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.12)}
+  .homebar:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+  @media (max-width:899.98px){.homebar{display:flex}.khero{--hb:44px}}   /* the hero budget pays for the bar so VOTE stays on the first screen */
 
   section{padding:88px 0;scroll-margin-top:80px}
   section h2{font-size:clamp(40px,5vw,60px);text-transform:uppercase;color:var(--slate);margin-bottom:18px}
@@ -129,9 +134,9 @@
      When the copy has to start above the chin, the photo first slides up into the headroom above his hair (--lift, at most 8vw),
      so the copy covers as little of his face as possible. */
   .khero{position:relative;background:var(--slate-ink);color:#fff;overflow:hidden;padding:0;
-    --ph:clamp(240px,calc(100vh - 310px),125vw);--budget:420px;--tgt:calc(100vh - var(--budget));
+    --ph:clamp(240px,calc(100vh - 310px - var(--hb,0px)),125vw);--budget:420px;--tgt:calc(100vh - var(--budget) - var(--hb,0px));
     --lift:clamp(0px,calc(72vw - var(--tgt)),8vw);--chin:calc(72vw - var(--lift));--cy:min(var(--ph),var(--chin),var(--tgt))}
-  @supports (height:100svh){.khero{--ph:clamp(240px,calc(100svh - 310px),125vw);--tgt:calc(100svh - var(--budget))}}
+  @supports (height:100svh){.khero{--ph:clamp(240px,calc(100svh - 310px - var(--hb,0px)),125vw);--tgt:calc(100svh - var(--budget) - var(--hb,0px))}}
   .khero-photo{position:relative;width:100%;height:var(--ph);aspect-ratio:auto;overflow:hidden;background:var(--slate-deep)}
   /* no photo treatment (Jon, round 3): no filter, no blend mode, no colour overlay. The only layer is the scrim, and it starts
      at his chin (--chin), where the copy sits over the photo on a phone, so the text stays legible; his face and the flag keep their
@@ -366,6 +371,7 @@
     <a class="btn" href="#vote" data-cta="header_vote">How to vote</a>
   </div>
 </header>
+<a class="homebar" href="/">&larr; Home: Common Sense for California</a>
 
 <main>
 
